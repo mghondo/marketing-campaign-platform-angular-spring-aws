@@ -1,81 +1,90 @@
 <div class="min-vh-100 d-flex flex-row align-items-center">
-  <c-container>
-    <c-row class="justify-content-center">
-      <c-col lg="8">
-        <c-card-group>
-          <c-card class="p-4">
-            <c-card-body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card-group">
+          <div class="card p-4">
+            <div class="card-body">
               <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <h1>Login</h1>
-                <p class="text-medium-emphasis">Sign In to your account</p>
+                <p class="text-muted">Sign In to your account</p>
                 
-                <c-input-group class="mb-3">
-                  <span cInputGroupText>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">
                     <svg cIcon name="cilUser"></svg>
                   </span>
                   <input
-                    cFormControl
                     type="email"
+                    class="form-control"
+                    [class.is-invalid]="email?.invalid && email?.touched"
                     placeholder="Email"
                     autoComplete="email"
                     formControlName="email"
                   />
-                </c-input-group>
+                  <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                    <div *ngIf="email?.errors?.['required']">Email is required</div>
+                    <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+                  </div>
+                </div>
                 
-                <c-input-group class="mb-4">
-                  <span cInputGroupText>
+                <div class="input-group mb-4">
+                  <span class="input-group-text">
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
                   <input
-                    cFormControl
                     type="password"
+                    class="form-control"
+                    [class.is-invalid]="password?.invalid && password?.touched"
                     placeholder="Password"
                     autoComplete="current-password"
                     formControlName="password"
                   />
-                </c-input-group>
+                  <div *ngIf="password?.invalid && password?.touched" class="invalid-feedback">
+                    <div *ngIf="password?.errors?.['required']">Password is required</div>
+                    <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</div>
+                  </div>
+                </div>
                 
-                <c-row>
-                  <c-col xs="6">
+                <div class="row">
+                  <div class="col-6">
                     <button
-                      cButton
-                      color="primary"
                       type="submit"
-                      [disabled]="!loginForm.valid"
+                      class="btn btn-primary"
+                      [disabled]="!loginForm.valid || isLoading"
                     >
+                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                       Login
                     </button>
-                  </c-col>
-                  <c-col xs="6" class="text-end">
-                    <button cButton color="link" class="px-0">
+                  </div>
+                  <div class="col-6 text-end">
+                    <button type="button" class="btn btn-link px-0">
                       Forgot password?
                     </button>
-                  </c-col>
-                </c-row>
+                  </div>
+                </div>
               </form>
-            </c-card-body>
-          </c-card>
+            </div>
+          </div>
           
-          <c-card class="text-white bg-primary py-5">
-            <c-card-body class="text-center">
+          <div class="card text-white bg-primary py-5">
+            <div class="card-body text-center">
               <div>
                 <h2>Sign up</h2>
                 <p>
                   Don't have an account yet? Create one to start managing your marketing campaigns.
                 </p>
                 <button
-                  cButton
-                  color="primary"
-                  variant="outline"
+                  type="button"
+                  class="btn btn-outline-light"
                   routerLink="/auth/register"
                 >
                   Register Now!
                 </button>
               </div>
-            </c-card-body>
-          </c-card>
-        </c-card-group>
-      </c-col>
-    </c-row>
-  </c-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

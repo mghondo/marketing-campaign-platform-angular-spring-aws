@@ -1,104 +1,107 @@
 <div class="min-vh-100 d-flex flex-row align-items-center">
-  <c-container>
-    <c-row class="justify-content-center">
-      <c-col md="9" lg="7" xl="6">
-        <c-card class="mx-4">
-          <c-card-body class="p-4">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-9 col-lg-7 col-xl-6">
+        <div class="card mx-4">
+          <div class="card-body p-4">
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
               <h1>Register</h1>
-              <p class="text-medium-emphasis">Create your account</p>
+              <p class="text-muted">Create your account</p>
               
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
                   <svg cIcon name="cilUser"></svg>
                 </span>
                 <input
-                  cFormControl
                   type="text"
-                  placeholder="First Name"
-                  autoComplete="given-name"
-                  formControlName="firstName"
+                  class="form-control"
+                  [class.is-invalid]="name?.invalid && name?.touched"
+                  placeholder="Full Name"
+                  autoComplete="name"
+                  formControlName="name"
                 />
-              </c-input-group>
+                <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+                  <div *ngIf="name?.errors?.['required']">Name is required</div>
+                </div>
+              </div>
               
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilUser"></svg>
-                </span>
-                <input
-                  cFormControl
-                  type="text"
-                  placeholder="Last Name"
-                  autoComplete="family-name"
-                  formControlName="lastName"
-                />
-              </c-input-group>
-              
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
                   <svg cIcon name="cilEnvelopeClosed"></svg>
                 </span>
                 <input
-                  cFormControl
                   type="email"
+                  class="form-control"
+                  [class.is-invalid]="email?.invalid && email?.touched"
                   placeholder="Email"
                   autoComplete="email"
                   formControlName="email"
                 />
-              </c-input-group>
+                <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                  <div *ngIf="email?.errors?.['required']">Email is required</div>
+                  <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+                </div>
+              </div>
               
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
                 <input
-                  cFormControl
                   type="password"
+                  class="form-control"
+                  [class.is-invalid]="password?.invalid && password?.touched"
                   placeholder="Password"
                   autoComplete="new-password"
                   formControlName="password"
                 />
-              </c-input-group>
+                <div *ngIf="password?.invalid && password?.touched" class="invalid-feedback">
+                  <div *ngIf="password?.errors?.['required']">Password is required</div>
+                  <div *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters</div>
+                </div>
+              </div>
               
-              <c-input-group class="mb-4">
-                <span cInputGroupText>
+              <div class="input-group mb-4">
+                <span class="input-group-text">
                   <svg cIcon name="cilLockLocked"></svg>
                 </span>
                 <input
-                  cFormControl
                   type="password"
+                  class="form-control"
+                  [class.is-invalid]="(confirmPassword?.invalid && confirmPassword?.touched) || (registerForm.hasError('passwordMismatch') && confirmPassword?.touched)"
                   placeholder="Repeat password"
                   autoComplete="new-password"
                   formControlName="confirmPassword"
                 />
-              </c-input-group>
-              
-              <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" 
-                   class="text-danger mb-3">
-                Passwords do not match
+                <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="invalid-feedback">
+                  <div *ngIf="confirmPassword?.errors?.['required']">Please confirm your password</div>
+                </div>
+                <div *ngIf="registerForm.hasError('passwordMismatch') && confirmPassword?.touched && !confirmPassword?.errors?.['required']" class="invalid-feedback">
+                  Passwords do not match
+                </div>
               </div>
               
               <div class="d-grid">
                 <button
-                  cButton
-                  color="success"
                   type="submit"
-                  [disabled]="!registerForm.valid"
+                  class="btn btn-success"
+                  [disabled]="!registerForm.valid || isLoading"
                 >
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                   Create Account
                 </button>
               </div>
               
               <div class="text-center mt-3">
-                <span class="text-medium-emphasis">Already have an account? </span>
+                <span class="text-muted">Already have an account? </span>
                 <a routerLink="/auth/login" class="text-decoration-none">
                   Sign in here
                 </a>
               </div>
             </form>
-          </c-card-body>
-        </c-card>
-      </c-col>
-    </c-row>
-  </c-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
