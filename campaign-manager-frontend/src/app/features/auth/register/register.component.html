@@ -1,0 +1,104 @@
+<div class="min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="9" lg="7" xl="6">
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <h1>Register</h1>
+              <p class="text-medium-emphasis">Create your account</p>
+              
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input
+                  cFormControl
+                  type="text"
+                  placeholder="First Name"
+                  autoComplete="given-name"
+                  formControlName="firstName"
+                />
+              </c-input-group>
+              
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input
+                  cFormControl
+                  type="text"
+                  placeholder="Last Name"
+                  autoComplete="family-name"
+                  formControlName="lastName"
+                />
+              </c-input-group>
+              
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilEnvelopeClosed"></svg>
+                </span>
+                <input
+                  cFormControl
+                  type="email"
+                  placeholder="Email"
+                  autoComplete="email"
+                  formControlName="email"
+                />
+              </c-input-group>
+              
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                  cFormControl
+                  type="password"
+                  placeholder="Password"
+                  autoComplete="new-password"
+                  formControlName="password"
+                />
+              </c-input-group>
+              
+              <c-input-group class="mb-4">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                  cFormControl
+                  type="password"
+                  placeholder="Repeat password"
+                  autoComplete="new-password"
+                  formControlName="confirmPassword"
+                />
+              </c-input-group>
+              
+              <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" 
+                   class="text-danger mb-3">
+                Passwords do not match
+              </div>
+              
+              <div class="d-grid">
+                <button
+                  cButton
+                  color="success"
+                  type="submit"
+                  [disabled]="!registerForm.valid"
+                >
+                  Create Account
+                </button>
+              </div>
+              
+              <div class="text-center mt-3">
+                <span class="text-medium-emphasis">Already have an account? </span>
+                <a routerLink="/auth/login" class="text-decoration-none">
+                  Sign in here
+                </a>
+              </div>
+            </form>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

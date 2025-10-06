@@ -1,0 +1,40 @@
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar bg-dark text-white" style="width: 250px; min-height: 100vh;">
+    <div class="p-3">
+      <h4>Campaign Manager</h4>
+      <nav class="nav flex-column">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link text-white">
+          <svg cIcon name="cilSpeedometer"></svg>
+          Dashboard
+        </a>
+        <a routerLink="/campaigns" routerLinkActive="active" class="nav-link text-white">
+          <svg cIcon name="cilBullhorn"></svg>
+          Campaigns
+        </a>
+        <a routerLink="/auth/login" routerLinkActive="active" class="nav-link text-white">
+          <svg cIcon name="cilAccountLogout"></svg>
+          Login
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1">
+    <!-- Header -->
+    <header class="bg-light border-bottom p-3">
+      <h3>Marketing Campaign Platform</h3>
+    </header>
+
+    <!-- Content -->
+    <main class="p-3">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top p-3 mt-auto">
+      <span>&copy; 2024 Campaign Manager. All rights reserved.</span>
+    </footer>
+  </div>
+</div>

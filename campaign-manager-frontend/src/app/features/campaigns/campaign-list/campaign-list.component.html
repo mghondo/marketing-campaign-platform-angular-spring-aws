@@ -1,0 +1,63 @@
+<c-container fluid>
+  <c-row>
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <strong>Campaigns</strong>
+          <div class="ms-auto">
+            <button cButton color="primary">
+              <svg cIcon name="cilPlus"></svg>
+              New Campaign
+            </button>
+          </div>
+        </c-card-header>
+        <c-card-body>
+          <p>This is the campaigns management page where you can view, create, edit, and manage your marketing campaigns.</p>
+          <p>Features to be implemented:</p>
+          <ul>
+            <li>Campaign listing with search and filters</li>
+            <li>Create new campaigns</li>
+            <li>Edit existing campaigns</li>
+            <li>Campaign status management</li>
+            <li>Campaign analytics and performance metrics</li>
+          </ul>
+          
+          <h6 class="mt-4">Sample Campaign Table</h6>
+          <table cTable>
+            <thead>
+              <tr>
+                <th scope="col">Campaign Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Budget</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Summer Sale 2024</td>
+                <td><span class="badge bg-success">Active</span></td>
+                <td>2024-06-01</td>
+                <td>$5,000</td>
+                <td>
+                  <button cButton size="sm" color="primary" variant="outline">Edit</button>
+                  <button cButton size="sm" color="danger" variant="outline" class="ms-2">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Black Friday Campaign</td>
+                <td><span class="badge bg-warning">Draft</span></td>
+                <td>2024-11-29</td>
+                <td>$10,000</td>
+                <td>
+                  <button cButton size="sm" color="primary" variant="outline">Edit</button>
+                  <button cButton size="sm" color="danger" variant="outline" class="ms-2">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>

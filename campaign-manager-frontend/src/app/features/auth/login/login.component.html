@@ -1,0 +1,81 @@
+<div class="min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="8">
+        <c-card-group>
+          <c-card class="p-4">
+            <c-card-body>
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <h1>Login</h1>
+                <p class="text-medium-emphasis">Sign In to your account</p>
+                
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input
+                    cFormControl
+                    type="email"
+                    placeholder="Email"
+                    autoComplete="email"
+                    formControlName="email"
+                  />
+                </c-input-group>
+                
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                    cFormControl
+                    type="password"
+                    placeholder="Password"
+                    autoComplete="current-password"
+                    formControlName="password"
+                  />
+                </c-input-group>
+                
+                <c-row>
+                  <c-col xs="6">
+                    <button
+                      cButton
+                      color="primary"
+                      type="submit"
+                      [disabled]="!loginForm.valid"
+                    >
+                      Login
+                    </button>
+                  </c-col>
+                  <c-col xs="6" class="text-end">
+                    <button cButton color="link" class="px-0">
+                      Forgot password?
+                    </button>
+                  </c-col>
+                </c-row>
+              </form>
+            </c-card-body>
+          </c-card>
+          
+          <c-card class="text-white bg-primary py-5">
+            <c-card-body class="text-center">
+              <div>
+                <h2>Sign up</h2>
+                <p>
+                  Don't have an account yet? Create one to start managing your marketing campaigns.
+                </p>
+                <button
+                  cButton
+                  color="primary"
+                  variant="outline"
+                  routerLink="/auth/register"
+                >
+                  Register Now!
+                </button>
+              </div>
+            </c-card-body>
+          </c-card>
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
