@@ -28,11 +28,10 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
-      
-  security:
-    jwt:
-      secret: ${JWT_SECRET:your-256-bit-secret-change-in-production-this-is-just-for-development}
-      expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+
+jwt:
+  secret: ${JWT_SECRET:your-256-bit-secret-change-in-production-this-is-just-for-development-and-testing-purposes-only}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
       
 server:
   port: 8080
