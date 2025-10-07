@@ -19,7 +19,24 @@ export const routes: Routes = [
       },
       {
         path: 'campaigns',
-        loadComponent: () => import('./features/campaigns/campaign-list/campaign-list.component').then(m => m.CampaignListComponent)
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/campaigns/campaign-list/campaign-list.component').then(m => m.CampaignListComponent)
+          },
+          {
+            path: 'create',
+            loadComponent: () => import('./features/campaigns/campaign-form/campaign-form.component').then(m => m.CampaignFormComponent)
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./features/campaigns/campaign-detail/campaign-detail.component').then(m => m.CampaignDetailComponent)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () => import('./features/campaigns/campaign-form/campaign-form.component').then(m => m.CampaignFormComponent)
+          }
+        ]
       }
     ]
   },

@@ -1,0 +1,266 @@
+<c-container fluid>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading campaign...</span>
+    </div>
+    <p class="mt-2 text-muted">Loading campaign details...</p>
+  </div>
+
+  <!-- Campaign Details -->
+  <div *ngIf="!loading && campaign">
+    <!-- Header -->
+    <c-row class="mb-4">
+      <c-col xs="12">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2 class="mb-2">{{ campaign.name }}</h2>
+            <app-status-badge [status]="campaign.status"></app-status-badge>
+          </div>
+          <div class="d-flex gap-2">
+            <button cButton color="light" variant="outline" (click)="backToCampaigns()">
+              <svg cIcon name="cilArrowLeft"></svg>
+              Back
+            </button>
+            <button cButton color="primary" (click)="editCampaign()">
+              <svg cIcon name="cilPencil"></svg>
+              Edit Campaign
+            </button>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <!-- Campaign Information -->
+    <c-row class="mb-4">
+      <c-col lg="8">
+        <c-card>
+          <c-card-header>
+            <strong>Campaign Information</strong>
+          </c-card-header>
+          <c-card-body>
+            <c-row>
+              <c-col md="6" class="mb-3">
+                <strong>Budget:</strong><br>
+                <span class="text-muted">{{ formatBudget(campaign.budget) }}</span>
+              </c-col>
+              <c-col md="6" class="mb-3">
+                <strong>Target Audience:</strong><br>
+                <span class="text-muted">{{ campaign.targetAudience || 'Not specified' }}</span>
+              </c-col>
+              <c-col md="6" class="mb-3">
+                <strong>Start Date:</strong><br>
+                <span class="text-muted">{{ campaign.startDate ? formatDate(campaign.startDate) : 'Not set' }}</span>
+              </c-col>
+              <c-col md="6" class="mb-3">
+                <strong>End Date:</strong><br>
+                <span class="text-muted">{{ campaign.endDate ? formatDate(campaign.endDate) : 'Not set' }}</span>
+              </c-col>
+              <c-col md="6" class="mb-3">
+                <strong>Created:</strong><br>
+                <span class="text-muted">{{ formatDate(campaign.createdAt) }}</span>
+              </c-col>
+              <c-col md="6" class="mb-3">
+                <strong>Last Updated:</strong><br>
+                <span class="text-muted">{{ formatDate(campaign.updatedAt) }}</span>
+              </c-col>
+            </c-row>
+            <div *ngIf="campaign.description" class="mt-3">
+              <strong>Description:</strong><br>
+              <p class="text-muted mb-0">{{ campaign.description }}</p>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+      
+      <!-- Quick Stats -->
+      <c-col lg="4">
+        <c-card>
+          <c-card-header>
+            <strong>Quick Stats</strong>
+          </c-card-header>
+          <c-card-body>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Total Assets:</span>
+              <span class="badge bg-primary fs-6">{{ campaign.assetCount }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Status:</span>
+              <app-status-badge [status]="campaign.status"></app-status-badge>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Budget:</span>
+              <span class="fw-bold">{{ formatBudget(campaign.budget) }}</span>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+
+    <!-- Assets Section -->
+    <c-row>
+      <c-col xs="12">
+        <c-card>
+          <c-card-header>
+            <strong>Campaign Assets</strong>
+            <span class="badge bg-secondary ms-2">{{ assets.length }}</span>
+          </c-card-header>
+          <c-card-body>
+            <!-- File Upload -->
+            <div class="mb-4">
+              <h6>Upload New Asset</h6>
+              <app-file-upload
+                [accept]="'.jpg,.jpeg,.png,.gif,.pdf,.mp4,.mov,.doc,.docx,.xls,.xlsx'"
+                [maxSizeMB]="100"
+                (fileSelected)="onFileSelected($event)"
+                [disabled]="uploadingAsset"
+              ></app-file-upload>
+              <div *ngIf="uploadingAsset" class="mt-2">
+                <div class="d-flex align-items-center">
+                  <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                  <span class="text-muted">Uploading asset...</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assets Loading -->
+            <div *ngIf="assetsLoading" class="text-center py-3">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading assets...</span>
+              </div>
+              <p class="mt-2 text-muted">Loading campaign assets...</p>
+            </div>
+
+            <!-- No Assets -->
+            <div *ngIf="!assetsLoading && assets.length === 0" class="text-center py-4">
+              <svg cIcon name="cilCloudUpload" size="3xl" class="text-muted mb-3"></svg>
+              <h6 class="text-muted">No assets uploaded yet</h6>
+              <p class="text-muted">Upload images, videos, or documents to get started.</p>
+            </div>
+
+            <!-- Assets Table (Desktop) -->
+            <div *ngIf="!assetsLoading && assets.length > 0" class="d-none d-md-block">
+              <table cTable hover responsive>
+                <thead>
+                  <tr>
+                    <th scope="col">File Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Uploaded</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of assets">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <svg [cIcon]="getFileTypeIcon(asset.fileName)" class="me-2"></svg>
+                        <span>{{ asset.fileName }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark">{{ asset.fileType.toUpperCase() }}</span>
+                    </td>
+                    <td>{{ formatFileSize(asset.fileSize) }}</td>
+                    <td>{{ formatDate(asset.uploadedAt) }}</td>
+                    <td>
+                      <div class="btn-group" role="group">
+                        <a
+                          [href]="asset.s3Url"
+                          target="_blank"
+                          cButton
+                          size="sm"
+                          color="info"
+                          variant="outline"
+                          title="View Asset"
+                        >
+                          <svg cIcon name="cilEye"></svg>
+                        </a>
+                        <a
+                          [href]="asset.s3Url"
+                          [download]="asset.fileName"
+                          cButton
+                          size="sm"
+                          color="primary"
+                          variant="outline"
+                          title="Download"
+                        >
+                          <svg cIcon name="cilCloudDownload"></svg>
+                        </a>
+                        <button
+                          cButton
+                          size="sm"
+                          color="danger"
+                          variant="outline"
+                          (click)="deleteAsset(asset)"
+                          title="Delete Asset"
+                        >
+                          <svg cIcon name="cilTrash"></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Assets Cards (Mobile) -->
+            <div *ngIf="!assetsLoading && assets.length > 0" class="d-md-none">
+              <c-card *ngFor="let asset of assets" class="mb-3">
+                <c-card-body>
+                  <div class="d-flex align-items-start mb-2">
+                    <svg [cIcon]="getFileTypeIcon(asset.fileName)" class="me-2 mt-1"></svg>
+                    <div class="flex-grow-1">
+                      <h6 class="card-title mb-1">{{ asset.fileName }}</h6>
+                      <div class="d-flex gap-2 mb-2">
+                        <span class="badge bg-light text-dark">{{ asset.fileType.toUpperCase() }}</span>
+                        <span class="badge bg-secondary">{{ formatFileSize(asset.fileSize) }}</span>
+                      </div>
+                      <small class="text-muted">Uploaded {{ formatDate(asset.uploadedAt) }}</small>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex gap-2">
+                    <a
+                      [href]="asset.s3Url"
+                      target="_blank"
+                      cButton
+                      size="sm"
+                      color="info"
+                      variant="outline"
+                      class="flex-fill"
+                    >
+                      <svg cIcon name="cilEye"></svg>
+                      View
+                    </a>
+                    <a
+                      [href]="asset.s3Url"
+                      [download]="asset.fileName"
+                      cButton
+                      size="sm"
+                      color="primary"
+                      variant="outline"
+                      class="flex-fill"
+                    >
+                      <svg cIcon name="cilCloudDownload"></svg>
+                      Download
+                    </a>
+                    <button
+                      cButton
+                      size="sm"
+                      color="danger"
+                      variant="outline"
+                      (click)="deleteAsset(asset)"
+                    >
+                      <svg cIcon name="cilTrash"></svg>
+                    </button>
+                  </div>
+                </c-card-body>
+              </c-card>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </div>
+</c-container>
